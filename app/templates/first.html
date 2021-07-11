@@ -2,18 +2,20 @@
 {% block content %}
 
 <div id="first_content" style="height: 100%;width: 100%">
-    <div style="height: 60%;width: 100%;">
+    <div id="origin_valid_img" style="height: 60%;width: 100%;">
         <div style="position:relative;float:left;top:10px;left:50px;width: 40%;" >
              <input type="file" id="origin_id"><br>
             <img src="" height="90%" width="100%" alt="原始签名图片" title="原始签名图片" id="origin_img">
-
-
 
         </div>
         <div style="position:relative;float:right;top:10px;right: 50px;width: 40%;">
             <input type="file" name="上传待验证签名" id="valid_id"><br>
             <img src="" height="90%" width="100%" alt="待验证签名图片" title="待验证签名图片" id="valid_img">
         </div>
+    </div>
+    <div id="request_" style="align-items: center;text-align:center;height: 15%;width: 100%;">
+        <button id="request_score" style="width: 50%;height: 80%;margin-top:10px;
+            background-color: grey;font-size: 25px;color:white;border-radius: 15px;">开始鉴定</button>
     </div>
 
 </div>
