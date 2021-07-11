@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div id="first_content" style="height: 100%;width: 100%">
+    <div style="height: 60%;width: 100%;">
+        <div style="position:relative;float:left;top:10px;left:50px;width: 40%;" >
+             <input type="file" id="origin_id"><br>
+            <img src="" height="90%" width="100%" alt="原始签名图片" title="原始签名图片" id="origin_img">
+
+
+
+        </div>
+        <div style="position:relative;float:right;top:10px;right: 50px;width: 40%;">
+            <input type="file" name="上传待验证签名" id="valid_id"><br>
+            <img src="" height="90%" width="100%" alt="待验证签名图片" title="待验证签名图片" id="valid_img">
+        </div>
+    </div>
+
+</div>
+<script type="text/javascript">
+    var fileInput_origin = document.getElementById("origin_id"), previewImg_origin = document.getElementById('origin_img');
+    fileInput_origin.addEventListener('change', function () {
+            var file = this.files[0];
+            var reader = new FileReader();
+            // 监听reader对象的的onload事件，当图片加载完成时，把base64编码賦值给预览图片
+            reader.addEventListener("load", function () {
+                previewImg_origin.src = reader.result;
+            }, false);
+            // 调用reader.readAsDataURL()方法，把图片转成base64
+            reader.readAsDataURL(file);
+        },
+        false
+    );
+
+    var fileInput_valid= document.getElementById("valid_id"), previewImg_valid = document.getElementById('valid_img');
+    fileInput_valid.addEventListener('change', function () {
+            var file = this.files[0];
+            var reader = new FileReader();
+            // 监听reader对象的的onload事件，当图片加载完成时，把base64编码賦值给预览图片
+            reader.addEventListener("load", function () {
+                previewImg_valid.src = reader.result;
+            }, false);
+            // 调用reader.readAsDataURL()方法，把图片转成base64
+            reader.readAsDataURL(file);
+        },
+        false
+    );
+</script>
+{% endblock %}

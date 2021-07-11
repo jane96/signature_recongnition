@@ -1,0 +1,61 @@
+<html>
+  <head>
+    {% if title %}
+    <title >{{title}} - microblog</title>
+    {% else %}
+    <title >microblog</title>
+    {% endif %}
+  </head>
+  <style>
+      #head_name{text-align:center;vertical-align:middle;
+          background-color: black;height:20%;}
+      #content_name{height: 80%;width:100%;background-color: grey;}
+      #left_box{width: 30%;background-color:#3c3f41; float: left;}
+      #right_box{width: 70%;height:100%;background-color: #2b2b2b;float: left;}
+      .nav_button{
+          position: relative;
+          float: bottom;
+          width: 100%;
+          height: 20%;
+          color:white;
+          background-color: #3c3f41;
+          font-size: 25px;
+      }
+      .nav_button:hover {
+            background-color:grey;
+      }
+  </style>
+  <body style="color:white">
+    <div id="head_name">
+        <h1 style = "position: relative;top:40%;font-size: 30px;"> Home </h1>
+    </div>
+    <div id="content_name">
+        <div id="left_box" >
+            <button id="button_1" class="nav_button"
+            onclick="window.location.href = '/first'">
+                first
+            </button>
+            <button id="button_2" class="nav_button"
+            onclick="window.location.href = '/second'">
+                second
+            </button>
+            <button id="button_3" class="nav_button"
+            onclick="window.location.href = '/thrid'">
+                thrid
+            </button>
+            <button id="button_4" class="nav_button"
+            onclick="window.location.href = '/four'">
+                four
+            </button>
+            <button id="button_5" class="nav_button"
+            onclick="window.location.href = '/five'">
+                five
+            </button>
+        </div>
+        <div id="right_box">
+             {% block content %}{% endblock %}
+        </div>
+    </div>
+
+  </body>
+</html>
