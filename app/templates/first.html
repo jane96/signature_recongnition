@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div id="first_content" style="height: 100%;width: 100%">
+<div id="first_content" style="height: 100%;width: 100%;text-align:center;">
     <div id="origin_valid_img" style="height: 60%;width: 100%;">
         <div style="position:relative;float:left;top:10px;left:50px;width: 40%;" >
              <input type="file" id="origin_id"><br>
@@ -16,6 +16,11 @@
     <div id="request_" style="align-items: center;text-align:center;height: 15%;width: 100%;">
         <button id="request_score" style="width: 50%;height: 80%;margin-top:10px;
             background-color: grey;font-size: 25px;color:white;border-radius: 15px;">开始鉴定</button>
+    </div>
+    <div id="show_result" style="margin:0 auto;text-align:center;width: 70%;height: 20%;border:2px solid white;">
+        <p>图片置信度为：0。9999887；</p>
+        <p>图片置信度为：0。9999887；</p>
+
     </div>
 
 </div>
