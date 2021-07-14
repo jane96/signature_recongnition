@@ -4,8 +4,8 @@ from flask import request
 import cv2
 from PIL import Image
 import matplotlib.image as mpimg # mpimg 用于读取图片
-
-from werkzeug.utils import secure_filename
+from tensorflow.keras.models import load_model
+import numpy as np
 
 @app.route('/')
 @app.route('/first')
@@ -59,7 +59,22 @@ def img_inverse_resize(path,suffix):
     img_inverse = mpimg.imread(path + "_gray" + suffix)
     print(img_origin.shape)
     print(img_inverse.shape)
+    return img_origin,img_inverse
+import tensorflow as tf
+from tensorflow.python.keras.backend import set_session
+sess = tf.Session()
+graphs = tf.get_default_graph()
+set_session(sess)
+model = load_model('../model/save_model/model_0.h5')
 
+def predict(inputs):
+    global sess
+    global graphs
+    with graphs.as_default():
+        set_session(sess)
+        res = model.predict(inputs)
+        print(res)
+        return 0
 
 @app.route("/first/request_score",methods=['GET', 'POST'])
 def request_score():
@@ -68,7 +83,8 @@ def request_score():
         valid_img = request.files.get("valid_name")
         origin_img.save("test_origin.png")
         valid_img.save("test_valid.png")
-        img_inverse_resize("test_origin",".png")
-        img_inverse_resize("test_valid",".png")
+        first_origin,first_inverse = img_inverse_resize("test_origin",".png")
+        second_origin,second_inverse = img_inverse_resize("test_valid",".png")
+        return predict([[first_origin],[first_inverse],[second_origin],[second_inverse]])
 
 

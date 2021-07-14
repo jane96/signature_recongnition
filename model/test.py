@@ -9,40 +9,38 @@ import cv2
 import matplotlib.image as mpimg # mpimg 用于读取图片
 def dataloader(path):
     shape = (128,128)
-    apos,neg=[],[]
-    anc_gray,pos_gray,neg_gray = [],[],[]
     forg_files = os.listdir(path +'full_forg')
     org_files = os.listdir(path +'full_org')
     forg_files.sort()
     org_files.sort()
    
-#     for x in tqdm(forg_files):
-#         if x.startswith('T'):continue
-#         img = cv2.imread(path + '/full_forg/' + x, 0)
-#         imgs = 255 - img
-#         cv2.imwrite(path + '/full_forg/' + 'gray_' +x,imgs)
-#     for x in tqdm(org_files):
-       
-#         if x.startswith('T'):continue
-#         img = cv2.imread(path + '/full_org/' + x, 0)
-#         imgs = 255 - img
-#         cv2.imwrite(path + '/full_org/' + 'gray_' +x,imgs)
-#     forg_files = os.listdir(path +'full_forg')
-#     org_files = os.listdir(path +'full_org')
-#     forg_files.sort()
-#     org_files.sort()
-#     for x in tqdm(forg_files):
-#         if x.startswith('T'):continue
-#         img = Image.open(path + '/full_forg/' + x)
-#         img = img.resize(shape)
-#         img = img.convert('RGB')
-#         img.save(path + '/full_forg/' + x)
-#     for x in tqdm(org_files):
-#         if x.startswith('T'):continue
-#         img = Image.open(path + '/full_org/' + x)
-#         img = img.resize(shape)
-#         img = img.convert('RGB')
-#         img.save(path + '/full_org/' + x)
+    # for x in tqdm(forg_files):
+    #     if x.startswith('T'):continue
+    #     img = cv2.imread(path + '/full_forg/' + x, 0)
+    #     imgs = 255 - img
+    #     cv2.imwrite(path + '/full_forg/' + 'gray_' +x,imgs)
+    # for x in tqdm(org_files):
+    #
+    #     if x.startswith('T'):continue
+    #     img = cv2.imread(path + '/full_org/' + x, 0)
+    #     imgs = 255 - img
+    #     cv2.imwrite(path + '/full_org/' + 'gray_' +x,imgs)
+    # forg_files = os.listdir(path +'full_forg')
+    # org_files = os.listdir(path +'full_org')
+    # forg_files.sort()
+    # org_files.sort()
+    # for x in tqdm(forg_files):
+    #     if x.startswith('T'):continue
+    #     img = Image.open(path + '/full_forg/' + x)
+    #     img = img.resize(shape)
+    #     img = img.convert('RGB')
+    #     img.save(path + '/full_forg/' + x)
+    # for x in tqdm(org_files):
+    #     if x.startswith('T'):continue
+    #     img = Image.open(path + '/full_org/' + x)
+    #     img = img.resize(shape)
+    #     img = img.convert('RGB')
+    #     img.save(path + '/full_org/' + x)
     samples = [[],[],[],[]]
     labels = []
     
@@ -70,20 +68,14 @@ def dataloader(path):
             
     return samples,labels  
 
-path = '../signature-recognition/handwritten-data/signatures/'
+path = './signatures/'
 
 Image.open(path +'full_org/' + 'original_' + str(10) + '_' + str(11) + '.png')
-
-
-
-
-
 samples,labels = dataloader(path)
 
 
-
 import tensorflow as tf
-# import efficientnet.keras as efn 
+# import efficientnet.keras as efn
 from tensorflow.keras import regularizers
 from tensorflow.keras.utils import multi_gpu_model
 from tensorflow.keras.applications.xception import Xception
@@ -96,19 +88,18 @@ from tensorflow.keras.applications.mobilenet import MobileNet
 from tensorflow.keras.applications.inception_v3 import InceptionV3
 from tensorflow.keras.applications.densenet import DenseNet121
 # from keras.applications.resnext import ResNeXt50
-from tensorflow.keras import applications
+
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Dense, Conv2D, MaxPooling2D, Dropout, Flatten,AveragePooling2D, Concatenate,Input,BatchNormalization,GlobalAveragePooling2D
-from triplet_loss_functions import triplet_loss_func
-from tensorflow.keras.optimizers import Adam
-import h5py
-from sklearn.metrics import accuracy_score
 
-# from tensorflow.keras.applications.imagenet_utils import preprocess_input
+from tensorflow.keras.optimizers import Adam
+
+
+
 import os
 import tensorflow.keras.backend as KTF
 from tensorflow.keras import backend as K
-os.environ["CUDA_VISIBLE_DEVICES"] = "1"
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 config = tf.ConfigProto()
 config.gpu_options.allow_growth=True   
 sess = tf.Session(config=config)
@@ -273,11 +264,9 @@ class TripMODEL:
 
 
 import numpy as np
-import tensorflow as tf  
-from sklearn.metrics import roc_auc_score
+
 from sklearn.metrics import accuracy_score
-import pandas as pd
-import random
+
 
 def get_three_result(preds,trues):
     result = []
@@ -290,11 +279,11 @@ def get_three_result(preds,trues):
     print("acc: ",accuracy_score(result,trues))
 
 
-batch_size = 32
+batch_size = 1
 epochs = 10
 
 # anc,pos,neg = dataloader('/home/huangzhen/project/handwritten/signature-recognition/handwritten-data/signatures/')
-train_number =  20000
+train_number =  10
 test_number = 20000
 train_data= ([samples[0][:train_number],samples[1][:train_number],samples[2][:train_number],samples[3][:train_number]])
 test_data = ([samples[0][test_number:],samples[1][test_number:],samples[2][test_number:],samples[3][test_number:]])
@@ -314,8 +303,14 @@ for step in range(epochs):
               verbose=1
               )
 
-    predictions = model.predict(test_data, batch_size=128, verbose=1)
-#     auc = roc_auc_score(y_test,predictions)
-    acc = get_three_result(predictions,y_test[0])
-    print('currnt acc:{} '.format(acc))
+    # predictions = model.predict(test_data, batch_size=128, verbose=1)
 
+    model.save_weights('save_model/model_{}_weights.h5'.format(step))
+    model.save('save_model/model_{}.h5'.format(step))
+    with open('save_model/model_{}.json'.format(step), 'w') as outfile:
+        outfile.write(model.to_json())
+
+#     auc = roc_auc_score(y_test,predictions)
+#     acc = get_three_result(predictions,y_test[0])
+#     print('currnt acc:{} '.format(acc))
+#
