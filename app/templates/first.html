@@ -1,21 +1,24 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div id="first_content" style="height: 100%;width: 100%;text-align:center;">
+<form id="first_content" action = "/first/request_score" style="height: 100%;width: 100%;text-align:center;"
+    enctype='multipart/form-data' method='POST'>
     <div id="origin_valid_img" style="height: 60%;width: 100%;">
-        <div style="position:relative;float:left;top:10px;left:50px;width: 40%;" >
-             <input type="file" id="origin_id"><br>
+        <div style="position:relative;float:left;top:10px;left:50px;width: 40%;">
+            <input type="file" id="origin_id" name="origin_name"><br>
             <img src="" height="90%" width="100%" alt="原始签名图片" title="原始签名图片" id="origin_img">
 
         </div>
         <div style="position:relative;float:right;top:10px;right: 50px;width: 40%;">
-            <input type="file" name="上传待验证签名" id="valid_id"><br>
+            <input type="file" name="valid_name" id="valid_id" ><br>
             <img src="" height="90%" width="100%" alt="待验证签名图片" title="待验证签名图片" id="valid_img">
         </div>
     </div>
     <div id="request_" style="align-items: center;text-align:center;height: 15%;width: 100%;">
-        <button id="request_score" style="width: 50%;height: 80%;margin-top:10px;
-            background-color: grey;font-size: 25px;color:white;border-radius: 15px;">开始鉴定</button>
+        <input type="submit" id="request_score" style="width: 50%;height: 80%;margin-top:10px;
+            background-color: grey;font-size: 25px;color:white;border-radius: 15px;"
+                >
+
     </div>
     <div id="show_result" style="margin:0 auto;text-align:center;width: 70%;height: 20%;border:2px solid white;">
         <p>图片置信度为：0。9999887；</p>
@@ -23,9 +26,10 @@
 
     </div>
 
-</div>
+</form>
 <script type="text/javascript">
-    var fileInput_origin = document.getElementById("origin_id"), previewImg_origin = document.getElementById('origin_img');
+    var fileInput_origin = document.getElementById("origin_id"),
+        previewImg_origin = document.getElementById('origin_img');
     fileInput_origin.addEventListener('change', function () {
             var file = this.files[0];
             var reader = new FileReader();
@@ -39,7 +43,7 @@
         false
     );
 
-    var fileInput_valid= document.getElementById("valid_id"), previewImg_valid = document.getElementById('valid_img');
+    var fileInput_valid = document.getElementById("valid_id"), previewImg_valid = document.getElementById('valid_img');
     fileInput_valid.addEventListener('change', function () {
             var file = this.files[0];
             var reader = new FileReader();
@@ -52,5 +56,22 @@
         },
         false
     );
+
+
+
+
+
+
+
+        function request_score() {
+            var img_origin = document.getElementById('origin_id');
+            var img_valid = document.getElementById('valid_img');
+            var origin_name = "origin_fake.png";
+            var valid_name = "valid_fake.png";
+            alert(img_origin.files[0]);
+
+            // window.location.href = '/first/request_score?img1=' + img_origin.src + "&img2=" + img_valid;
+
+        }
 </script>
 {% endblock %}
