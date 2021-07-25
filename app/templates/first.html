@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
 
-<form id="first_content" action = "/first/request_score" style="height: 100%;width: 100%;text-align:center;"
-    enctype='multipart/form-data' method='POST'>
+<form id="first_content" action="/first/request_score" style="height: 100%;width: 100%;text-align:center;"
+      enctype='multipart/form-data' method='POST'>
     <div id="origin_valid_img" style="height: 60%;width: 100%;">
         <div style="position:relative;float:left;top:10px;left:50px;width: 40%;">
             <input type="file" id="origin_id" name="origin_name"><br>
@@ -10,23 +10,29 @@
 
         </div>
         <div style="position:relative;float:right;top:10px;right: 50px;width: 40%;">
-            <input type="file" name="valid_name" id="valid_id" ><br>
+            <input type="file" name="valid_name" id="valid_id"><br>
             <img src="" height="90%" width="100%" alt="待验证签名图片" title="待验证签名图片" id="valid_img">
         </div>
     </div>
     <div id="request_" style="align-items: center;text-align:center;height: 15%;width: 100%;">
         <input type="submit" id="request_score" style="width: 50%;height: 80%;margin-top:10px;
             background-color: grey;font-size: 25px;color:white;border-radius: 15px;"
-                >
+        >
 
     </div>
-    <div id="show_result" style="margin:0 auto;text-align:center;width: 70%;height: 20%;border:2px solid white;">
-        <p>图片置信度为：0。9999887；</p>
-        <p>图片置信度为：0。9999887；</p>
+    <div id="show_result" style="border: 1px solid white;width: 70%;text-align: center;margin: auto;">
+        <p id="confidence_para">multi task confidence</p>
+        <p id="confidence_result">result</p>
 
     </div>
+
 
 </form>
+<!--<iframe name="first_content" id="first_content" style="display:none"></iframe>-->
+<script src="../static/3.6.jq.min.js"></script>
+<script src="../static/jq.form.js"></script>
+
+
 <script type="text/javascript">
     var fileInput_origin = document.getElementById("origin_id"),
         previewImg_origin = document.getElementById('origin_img');
@@ -58,20 +64,21 @@
     );
 
 
+    $(document).ready(function() {
+	        $("#first_content").ajaxForm(function(data){
+	              console.log("post success." + data);
+	              var values = data.split("\t");
+	              console.log(values);
+	              document.getElementById("confidence_para").innerHTML = "first: " + values[0] +"\t" + "second: " + values[1] + "\t" + "thrid: " + values[2] +
+                          "\t" + "four: " + "nan" + "\t" + "five: " + "nan";
+	              var valid_result = Number(values[3]) >= 2;
+	              console.log(valid_result.toString());
+	              document.getElementById("confidence_result").innerHTML = "confidence value: " + (Number(values[4]) / 3).toString() + "\t" + "valid result: " + valid_result.toString();
+
+	        });
+	 });
 
 
 
-
-
-        function request_score() {
-            var img_origin = document.getElementById('origin_id');
-            var img_valid = document.getElementById('valid_img');
-            var origin_name = "origin_fake.png";
-            var valid_name = "valid_fake.png";
-            alert(img_origin.files[0]);
-
-            // window.location.href = '/first/request_score?img1=' + img_origin.src + "&img2=" + img_valid;
-
-        }
 </script>
 {% endblock %}

@@ -208,24 +208,7 @@ class TripMODEL:
         
         model = Model(initial_model.input, [x])
         return model
-    def second_model(self,firstModel):
-        input_a = Input(shape=self.shape,name='input_a') 
-        input_b = Input(shape=self.shape,name="input_b")
-        input_c = Input(shape=self.shape,name="input_c")
-        input_d = Input(shape=self.shape,name='input_d')
-        
-        a = firstModel(input_a)
-        b = firstModel(input_b)
-        c = firstModel(input_c)
-        d = firstModel(input_d)
-        
-       
-        pos_dist =  K.sqrt(K.sum(K.square(a -b), axis=-1, keepdims=True))
-        gray_pos_dist = K.sqrt(K.sum(K.square(c-d),axis=-1,keepdims=True))
 
-        model = Model(inputs=[input_a,input_b,input_c,input_d],outputs=pos_dist + gray_pos_dist)
-
-        return model
     def fine_tuned_model(self):
         first_input = Input(shape=self.shape, name='first_input')  
         first_input_gray = Input(shape=self.shape, name='first_input_gray') 
