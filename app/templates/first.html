@@ -70,10 +70,10 @@
 	              var values = data.split("\t");
 	              console.log(values);
 	              document.getElementById("confidence_para").innerHTML = "first: " + values[0] +"\t" + "second: " + values[1] + "\t" + "thrid: " + values[2] +
-                          "\t" + "four: " + "nan" + "\t" + "five: " + "nan";
-	              var valid_result = Number(values[3]) >= 2;
+                          "\t" + "four: " + values[3] + "\t" + "five: " + values[4];
+	              var valid_result = Number(values[5]) >= 3;
 	              console.log(valid_result.toString());
-	              document.getElementById("confidence_result").innerHTML = "confidence value: " + (Number(values[4]) / 3).toString() + "\t" + "valid result: " + valid_result.toString();
+	              document.getElementById("confidence_result").innerHTML = "confidence value: " + (Number(values[6]) / 5).toString() + "\t" + "valid result: " + valid_result.toString();
 
 	        });
 	 });

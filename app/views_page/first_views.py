@@ -16,7 +16,7 @@ def request_score():
         valid_img.save("test_valid.png")
         first_origin,first_inverse = img_inverse_resize("test_origin",".png")
         second_origin,second_inverse = img_inverse_resize("test_valid",".png")
-        inputs = [[first_origin], [first_inverse], [second_origin], [second_inverse]]
+        inputs = [[first_origin],  [second_origin], [first_inverse],[second_inverse]]
 
         score_prob, score_pos, score_sum = predict(inputs)
         print("score_prob: ", score_prob)
@@ -48,11 +48,18 @@ def img_inverse_resize(path,suffix):
     return img_origin,img_inverse
 
 import tensorflow as tf
+import tensorflow.keras.backend as KTF
+import os
 from tensorflow.python.keras.backend import set_session
-sess = tf.Session()
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+config = tf.ConfigProto()
+config.gpu_options.allow_growth=True
+sess = tf.Session(config=config)
+KTF.set_session(sess)
+
 graphs = tf.get_default_graph()
 set_session(sess)
-model = load_model('../model/save_model/model_4.h5')
+model = load_model('../model/save_model/model_7.h5')
 
 def predict(inputs):
     global sess
