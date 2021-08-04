@@ -6,47 +6,46 @@ import numpy as np
 import cv2
 import matplotlib.image as mpimg  # mpimg 用于读取图片
 
-
-def data_resize(path):
-    forg_files = os.listdir(path + 'full_forg')
-    org_files = os.listdir(path + 'full_org')
+shape = (128,128)
+def data_resize(path,forg,org):
+    forg_files = os.listdir(path + forg)
+    org_files = os.listdir(path + org)
     forg_files.sort()
     org_files.sort()
     for x in tqdm(forg_files):
         if x.startswith('T'): continue
-        img = cv2.imread(path + '/full_forg/' + x, 0)
+        img = cv2.imread(path + forg + x, 0)
         imgs = 255 - img
-        cv2.imwrite(path + '/full_forg/' + 'gray_' + x, imgs)
+        cv2.imwrite(path + forg + 'gray_' + x, imgs)
     for x in tqdm(org_files):
 
         if x.startswith('T'): continue
-        img = cv2.imread(path + '/full_org/' + x, 0)
+        img = cv2.imread(path + org + x, 0)
         imgs = 255 - img
-        cv2.imwrite(path + '/full_org/' + 'gray_' + x, imgs)
+        cv2.imwrite(path + org + 'gray_' + x, imgs)
 
 
-def data_inverse(path):
-    forg_files = os.listdir(path + 'full_forg')
-    org_files = os.listdir(path + 'full_org')
+def data_inverse(path,forg,org):
+    forg_files = os.listdir(path + forg)
+    org_files = os.listdir(path + org)
     forg_files.sort()
     org_files.sort()
 
     for x in tqdm(forg_files):
         if x.startswith('T'): continue
-        img = Image.open(path + '/full_forg/' + x)
+        img = Image.open(path + forg + x)
         img = img.resize(shape)
         img = img.convert('RGB')
-        img.save(path + '/full_forg/' + x)
+        img.save(path + forg + x)
     for x in tqdm(org_files):
         if x.startswith('T'): continue
-        img = Image.open(path + '/full_org/' + x)
+        img = Image.open(path + org + x)
         img = img.resize(shape)
         img = img.convert('RGB')
-        img.save(path + '/full_org/' + x)
+        img.save(path + forg + x)
 
 
 def train_dataloader(path, batch_size):
-    shape = (128, 128)
     samples = [[], [], [], []]
     labels = []
     n = 45
@@ -168,7 +167,7 @@ def test_dataloader(path):
     return ([np.array(samples[0]), np.array(samples[1]), np.array(samples[2]), np.array(samples[3])],
             [np.array(labels), np.array(labels), np.array(labels)])
 
-path = '../signature-recognition/handwritten-data/signatures/'
+path = './signatures/'
 
 Image.open(path +'full_org/' + 'original_' + str(10) + '_' + str(11) + '.png')
 
